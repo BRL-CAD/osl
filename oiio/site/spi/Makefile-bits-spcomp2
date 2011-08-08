@@ -1,0 +1,90 @@
+# SPI-specific settings
+$(info Including spi/Makefile-bits-spcomp2)
+
+# READ THIS FIRST
+#
+# If you are building for installation as an SpComp2, make like this:
+# 1) Your must be setshot, for patchelf to be found.
+# 2) make spcomp2_install_local
+# or 2) make spcomp2_install
+#
+# Other notes about the SpComp2:
+# - it also tries to install OIIO's binaries alongside the libs. It would
+#   be really nice if somebody would either appwrap those binaries or
+#   symlink them to an spi show path on each install. For the moment
+#   though, they are just there for people who know.
+# - it would also be nice if we had a convention for tagging SpComp2
+#   release versions on the svn server.
+#
+
+OPENIMAGEIO_SPCOMP2_VERSION=30
+
+# Default namespace
+NAMESPACE ?= 'OpenImageIO_SPI'
+SOVERSION ?= ${OPENIMAGEIO_SPCOMP2_VERSION}
+SPCOMP2_RPATH ?= ""
+
+## Spinux (current)
+ifeq ($(SP_ARCH), spinux1_x86_64)
+    platform=spinux1
+    COMPILER=gcc44m64
+    MY_CMAKE_FLAGS += \
+     -DOPENGL_gl_LIBRARY=/usr/lib64/xorg.nvidia.3d/libGL.so \
+     -DILMBASE_CUSTOM=1 \
+     -DILMBASE_CUSTOM_LIBRARIES="SpiImath SpiHalf SpiIlmThread SpiIex" \
+     -DOPENEXR_CUSTOM=1 \
+     -DOPENEXR_CUSTOM_LIBRARY="SpiIlmImf"
+endif  # endif spinux1_x86_64
+
+
+all: dist
+
+.PHONY: spcomp2_install spcomp2_install_local clean all
+
+comma:= ,
+empty:=
+space:= $(empty) $(empty)
+
+INSTALL_SPCOMP2_LOCATION = /shots/spi/home/lib/SpComp2
+INSTALL_BIN_LOCATION = /shots/spi/home/bin/$(ARCHITECTURE)
+INSTALL_SPCOMP2_CURRENT = $(INSTALL_SPCOMP2_LOCATION)/OpenImageIO/$(ARCHITECTURE)-$(COMPILER)/v$(OPENIMAGEIO_SPCOMP2_VERSION)
+
+spcomp2_install_local: INSTALL_SPCOMP2_LOCATION = $(SPCOMP2_LOCAL_PATH)
+spcomp2_install_local: INSTALL_BIN_LOCATION = $(INSTALL_SPCOMP2_CURRENT)/bin
+spcomp2_install_local: spcomp2_install
+
+local: dist
+
+spcomp2: MY_CMAKE_FLAGS += \
+		-DCMAKE_SKIP_BUILD_RPATH:BOOL=ON \
+		-DCMAKE_INSTALL_RPATH=$(INSTALL_SPCOMP2_LOCATION)/OpenImageIO/$(ARCHITECTURE)-$(COMPILER)/v$(OPENIMAGEIO_SPCOMP2_VERSION)/lib \
+		-DCMAKE_INSTALL_RPATH_USE_LINK_PATH:BOOL=ON
+
+spcomp2: dist
+
+spcomp2_debug: debug
+
+# This goal can't start with 'install' because something elsewhere picks
+# it up and starts doing bad things
+spcomp2_install: spcomp2 spcomp2_debug 
+	echo $(INSTALL_SPCOMP2_LOCATION)
+	
+	patchelf \
+	--set-rpath $(SPCOMP2_RPATH) \
+	${dist_dir}/lib/libOpenImageIO.so
+	
+	patchelf \
+	--set-rpath $(SPCOMP2_RPATH) \
+	${dist_dir}.debug/lib/libOpenImageIO.so
+	
+	perl -I/usr/local/spi/lib/make /usr/local/spi/bin/spcomp_install.pl -m compile03.spimageworks.com \
+	--project=OpenImageIO --version=$(OPENIMAGEIO_SPCOMP2_VERSION) \
+	--srcdir=${dist_dir}/lib --root=$(INSTALL_SPCOMP2_LOCATION) \
+	--arch=$(ARCHITECTURE)-$(COMPILER) \
+	--headers=$(subst $(space),$(comma),$(wildcard ${dist_dir}/include/OpenImageIO/*)) \
+	--cflags= --static_lflags="$(LINK_BOOST) $(LINK_OPENEXR) -lpthread" --namespace=${NAMESPACE} --spcomp_depend= --spcomp2_depend= \
+	--builddir_o=${dist_dir}/lib --builddir_d=${dist_dir}.debug/lib
+#	-sudo mkdir -p $(INSTALL_SPCOMP2_CURRENT)/bin
+#	sudo cp ${dist_dir}/bin/* $(INSTALL_SPCOMP2_CURRENT)/bin
+# --docs=${dist_dir}/doc 
+
