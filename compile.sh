@@ -20,5 +20,12 @@ cd ..
 # ------------------------------------------------------------------------------
 echo "Installing openexr"
 cd openexr; ./configure --prefix=$DIR/$prefix --with-ilmbase-prefix=$DIR/$prefix; make;
+cd ..
 
 #--with-ilmbase-prefix=/Users/kunigami/dev/brlcad-root/brlcad/osl/trunk/dist
+
+# ------------------------------------------------------------------------------
+# Instal Open Image IO
+# ------------------------------------------------------------------------------
+echo "Installing oiio"
+cd oiio; make USE_TBB=0;
