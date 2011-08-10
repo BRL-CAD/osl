@@ -45,10 +45,12 @@ mark_as_advanced (ILMBASE_VERSION)
 setup_path (ILMBASE_HOME "${THIRD_PARTY_TOOLS_HOME}"
             "Location of the ILMBase library install")
 mark_as_advanced (ILMBASE_HOME)
+
 find_path (ILMBASE_INCLUDE_AREA OpenEXR/half.h
-           ${ILMBASE_HOME}/include/ilmbase-${ILMBASE_VERSION}
            ${ILMBASE_HOME}/include
-          )
+           ${ILMBASE_HOME}/include/ilmbase-${ILMBASE_VERSION}
+           NO_DEFAULT_PATH)
+
 if (ILMBASE_CUSTOM)
     set (IlmBase_Libraries ${ILMBASE_CUSTOM_LIBRARIES})
     separate_arguments(IlmBase_Libraries)
@@ -60,7 +62,7 @@ foreach (_lib ${IlmBase_Libraries})
     find_library (current_lib ${_lib}
                   PATHS ${ILMBASE_HOME}/lib ${ILMBASE_HOME}/lib64
                         ${ILMBASE_LIB_AREA}
-                  )
+                  NO_DEFAULT_PATH)
     list(APPEND ILMBASE_LIBRARIES ${current_lib})
     # this effectively unsets ${current_lib} so that find_library()
     # won't use the previous search results from the cache
@@ -132,9 +134,9 @@ endmacro ()
 ###########################################################################
 # Boost setup
 
-message (STATUS "BOOST_ROOT ${BOOST_ROOT}")
+message (STATUS "--- BOOST_ROOT ${BOOST_ROOT}")
 
-set (Boost_ADDITIONAL_VERSIONS "1.40" "1.39" "1.38" "1.38.0" "1.37" "1.37.0" "1.34.1" "1_34_1")
+set (Boost_ADDITIONAL_VERSIONS "1.46.1" "1.40" "1.39" "1.38" "1.38.0" "1.37" "1.37.0" "1.34.1" "1_34_1")
 #set (Boost_USE_STATIC_LIBS   ON)
 set (Boost_USE_MULTITHREADED ON)
 if (BOOST_CUSTOM)
@@ -145,7 +147,7 @@ else ()
         list (APPEND Boost_COMPONENTS wave)
     endif ()
 
-    find_package (Boost 1.34 REQUIRED 
+    find_package (Boost 1.46.1 REQUIRED 
                   COMPONENTS ${Boost_COMPONENTS}
                  )
 endif ()
@@ -251,11 +253,12 @@ if (LLVM_CUSTOM)
     PATHS ${LLVM_DIRECTORY}/include
     )
 else ()
+  message (STATUS "Seaching for LLVM_LIBRARY")
   find_library ( LLVM_LIBRARY
-    NAMES LLVM-2.7 LLVM-2.8svn LLVM-2.8 LLVM-2.9svn
-    PATHS /usr/local/lib /opt/local/lib )
+    NAMES LLVM-2.7 LLVM-2.8svn LLVM-2.8 LLVM-2.9svn LLVM-2.9
+    PATHS /usr/local/lib /opt/local/lib /Users/kunigami/dev/brlcad-root/brlcad/osl/trunk/dist/lib )
   find_path ( LLVM_INCLUDES llvm/LLVMContext.h
-    PATHS /usr/local/include /opt/local/include
+    PATHS /usr/local/include /opt/local/include /Users/kunigami/dev/brlcad-root/brlcad/osl/trunk/dist/include
     )
 endif ()
 
