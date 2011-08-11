@@ -17,9 +17,9 @@ install (TARGETS libtestshade
 )
 
 # The 'testshade_dso' executable
-ADD_EXECUTABLE ( testshade_dso testshade_dso.cpp )
-LINK_ILMBASE ( testshade_dso )
-TARGET_LINK_LIBRARIES ( testshade_dso ${OPENIMAGEIO_LIBRARY} ${CMAKE_DL_LIBS} )
+#ADD_EXECUTABLE ( testshade_dso testshade_dso.cpp )
+#LINK_ILMBASE ( testshade_dso )
+#TARGET_LINK_LIBRARIES ( testshade_dso ${OPENIMAGEIO_LIBRARY} ${CMAKE_DL_LIBS} )
 #oslexec oslcomp oslquery ${OPENIMAGEIO_LIBRARY} ${Boost_LIBRARIES} ${CMAKE_DL_LIBS})
-INSTALL ( TARGETS testshade_dso RUNTIME DESTINATION bin )
+#INSTALL ( TARGETS testshade_dso RUNTIME DESTINATION bin )
 
