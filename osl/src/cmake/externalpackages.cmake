@@ -94,22 +94,25 @@ mark_as_advanced (OPENEXR_VERSION_DIGITS)
 setup_path (OPENEXR_HOME "${THIRD_PARTY_TOOLS_HOME}"
             "Location of the OpenEXR library install")
 mark_as_advanced (OPENEXR_HOME)
+
+message(STATUS "OPENEXR_HOME = ${OPENEXR_HOME}")
+
 find_path (OPENEXR_INCLUDE_AREA OpenEXR/OpenEXRConfig.h
            ${OPENEXR_HOME}/include
            ${ILMBASE_HOME}/include/openexr-${OPENEXR_VERSION}
-          )
+          NO_DEFAULT_PATH)
 if (OPENEXR_CUSTOM)
     find_library (OPENEXR_LIBRARY ${OPENEXR_CUSTOM_LIBRARY}
                   PATHS ${OPENEXR_HOME}/lib
                         ${OPENEXR_HOME}/lib64
                         ${OPENEXR_LIB_AREA}
-                 )
+                NO_DEFAULT_PATH)
 else ()
     find_library (OPENEXR_LIBRARY IlmImf
                   PATHS ${OPENEXR_HOME}/lib
                         ${OPENEXR_HOME}/lib64
                         ${OPENEXR_LIB_AREA}
-                 )
+                 NO_DEFAULT_PATH)
 endif ()
 
 message (STATUS "OPENEXR_INCLUDE_AREA = ${OPENEXR_INCLUDE_AREA}")
@@ -243,6 +246,9 @@ endif (USE_OPENGL)
 
 
 ###########################################################################
+
+set(LLVM_HOME $ENV{LLVM_HOME})
+message(STATUS "llvm home: ${LLVM_HOME}")
 # LLVM library setup
 if (LLVM_CUSTOM)
   message (STATUS "LLVM_DIRECTORY is ${LLVM_DIRECTORY}")
@@ -256,10 +262,10 @@ else ()
   message (STATUS "Seaching for LLVM_LIBRARY")
   find_library ( LLVM_LIBRARY
     NAMES LLVM-2.7 LLVM-2.8svn LLVM-2.8 LLVM-2.9svn LLVM-2.9
-    PATHS /usr/local/lib /opt/local/lib /Users/kunigami/dev/brlcad-root/brlcad/osl/trunk/dist/lib )
+    PATHS ${LLVM_HOME}/lib /usr/local/lib /opt/local/lib NO_DEFAULT_PATH)
   find_path ( LLVM_INCLUDES llvm/LLVMContext.h
-    PATHS /usr/local/include /opt/local/include /Users/kunigami/dev/brlcad-root/brlcad/osl/trunk/dist/include
-    )
+    PATHS ${LLVM_HOME}/include /usr/local/include /opt/local/include
+    NO_DEFAULT_PATH)
 endif ()
 
 if (LLVM_LIBRARY AND LLVM_INCLUDES)
