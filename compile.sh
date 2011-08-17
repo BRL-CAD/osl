@@ -78,7 +78,7 @@ export BOOST_ROOT = $DIR/$prefix
 # Instal Open Image IO
 # ------------------------------------------------------------------------------
 echo "Installing oiio"
-cd oiio; make USE_TBB=0 INSTALLDIR=$DIR/$prefix ;
+cd oiio; make USE_TBB=0 INSTALLDIR=$DIR ;
 cd ..
 
 export OPENIMAGEIOHOME=$DIR/$prefix
