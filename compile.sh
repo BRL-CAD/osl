@@ -18,6 +18,9 @@ elif [[ "$unamestr" == 'Darwin' ]]; then
     export DYLD_LIBRARY_PATH=$DIR/$prefix/lib:$DYLD_LIBRARY_PATH
 fi
 
+# Adjust cmake path, so that it will search for our local builds
+export CMAKE_PREFIX_INSTALL=$Dir/$prefix/:$CMAKE_PREFIX_INSTALL
+# FIXME: add the location to brl-cad built libraries
 
 # ------------------------------------------------------------------------------
 # Variables
@@ -42,10 +45,24 @@ export ILMBASE_HOME=$DIR/$prefix
 # Install openexr
 # ------------------------------------------------------------------------------
 echo "Installing openexr"
-cd openexr; ./configure --prefix=$DIR/$prefix --with-ilmbase-prefix=$DIR/$prefix; make;
+cd openexr; ./configure --prefix=$DIR/$prefix --with-ilmbase-prefix=$DIR/$prefix; make; make install;
 cd ..
 
 export OPENEXR_HOME=$DIR/$prefix
+
+# ------------------------------------------------------------------------------ 
+# Install Jpeg libary
+# ------------------------------------------------------------------------------
+echo "Installing jpeg"
+cd jpeg-8c; ./configure --prefix=$DIR/$prefix; make; make install;
+cd ..
+
+# ------------------------------------------------------------------------------ 
+# Install Tiff library
+# ------------------------------------------------------------------------------
+echo "Installing tiff"
+cd tiff-3.9.5; ./configure --prefix=$DIR/$prefix; make; make install;
+cd ..
 
 # ------------------------------------------------------------------------------ 
 # Install Boost
