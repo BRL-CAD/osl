@@ -12,7 +12,7 @@
 .PHONY: all debug profile clean realclean nuke doxygen
 
 working_dir	:= ${shell pwd}
-INSTALLDIR       =${working_dir}
+#INSTALLDIR       =${working_dir}
 
 # Figure out which architecture we're on
 include ${working_dir}/src/make/detectplatform.mk
@@ -43,7 +43,7 @@ endif
 top_build_dir := build
 build_dir     := ${top_build_dir}/${platform}${variant}
 top_dist_dir  := dist
-dist_dir      := ${top_dist_dir}/${platform}${variant}
+dist_dir      := ${top_dist_dir}
 
 $(info dist_dir = ${dist_dir})
 $(info INSTALLDIR = ${INSTALLDIR})
