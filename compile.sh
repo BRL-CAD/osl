@@ -51,12 +51,10 @@ export OPENEXR_HOME=$DIR/$prefix
 # Instal Open Image IO
 # ------------------------------------------------------------------------------
 echo "Installing oiio"
-cd oiio; make USE_TBB=0;
+cd oiio; make USE_TBB=0 INSTALLDIR=$DIR/$prefix ;
 cd ..
 
-# FIXME build OpenImageIO on $DIR/$prefix
-# Set environment variable OPENIMAGEIOHOME
-export OPENIMAGEIOHOME=$DIR/oiio/dist/
+export OPENIMAGEIOHOME=$DIR/$prefix
 
 # ------------------------------------------------------------------------------ 
 # Install Boost
@@ -71,7 +69,7 @@ export BOOST_ROOT = $DIR/$prefix
 # ------------------------------------------------------------------------------
 # Install OSL
 # ------------------------------------------------------------------------------
-cd osl; make;
+cd osl; make INSTALLDIR=$DIR/$prefix;
 cd ..
 
-export OSLHOME=$DIR/osl/dist
+export OSLHOME=$DIR/$prefix
