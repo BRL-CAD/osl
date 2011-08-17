@@ -72,7 +72,7 @@ cd boost; ./bootstrap.sh --prefix=$DIR/$prefix; ./b2 --layout=tagged; ./b2 insta
 cd ..
 
 # Set environment variable BOOST_ROOT
-export BOOST_ROOT = $DIR/$prefix
+export BOOST_ROOT=$DIR/$prefix
 
 # ------------------------------------------------------------------------------
 # Instal Open Image IO
@@ -86,7 +86,7 @@ export OPENIMAGEIOHOME=$DIR/$prefix
 # ------------------------------------------------------------------------------
 # Install OSL
 # ------------------------------------------------------------------------------
-cd osl; make INSTALLDIR=$DIR/$prefix;
+cd osl; make INSTALLDIR=$DIR;
 cd ..
 
 export OSLHOME=$DIR/$prefix
