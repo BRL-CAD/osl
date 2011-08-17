@@ -47,15 +47,6 @@ cd ..
 
 export OPENEXR_HOME=$DIR/$prefix
 
-# ------------------------------------------------------------------------------
-# Instal Open Image IO
-# ------------------------------------------------------------------------------
-echo "Installing oiio"
-cd oiio; make USE_TBB=0 INSTALLDIR=$DIR/$prefix ;
-cd ..
-
-export OPENIMAGEIOHOME=$DIR/$prefix
-
 # ------------------------------------------------------------------------------ 
 # Install Boost
 # ------------------------------------------------------------------------------
@@ -65,6 +56,15 @@ cd ..
 
 # Set environment variable BOOST_ROOT
 export BOOST_ROOT = $DIR/$prefix
+
+# ------------------------------------------------------------------------------
+# Instal Open Image IO
+# ------------------------------------------------------------------------------
+echo "Installing oiio"
+cd oiio; make USE_TBB=0 INSTALLDIR=$DIR/$prefix ;
+cd ..
+
+export OPENIMAGEIOHOME=$DIR/$prefix
 
 # ------------------------------------------------------------------------------
 # Install OSL
