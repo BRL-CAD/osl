@@ -25,8 +25,10 @@ if (NOT CMAKE_BUILD_TYPE)
 endif ()
 
 ## turn on more detailed warnings
-set ( CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
-set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror" )
+#set ( CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
+set ( CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+#set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror" )
+set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall" )
 
 ## disable RTTI
 ## NOTE(ckulla): LLVM builds without RTTI by default so beware
