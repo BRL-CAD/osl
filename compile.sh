@@ -26,17 +26,19 @@ unamestr=`uname`
 
 # Adjust linker path
 if [[ "$unamestr" == 'Linux' ]]; then
-    echo "TODO..."
+    export LD_LIBRARY_PATH=$DIR/$prefix/lib:$LD_LIBRARY_PATH
 elif [[ "$unamestr" == 'FreeBSD' ]]; then
     echo "TODO..."
 elif [[ "$unamestr" == 'Darwin' ]]; then
 # Mac OS
     export DYLD_LIBRARY_PATH=$DIR/$prefix/lib:$DYLD_LIBRARY_PATH
+else
+    echo "[Error] Platform not recognized, please add the library paths manually"
+    exit
 fi
 
 # Adjust cmake path, so that it will search for our local builds
 export CMAKE_PREFIX_INSTALL=$Dir/$prefix/:$CMAKE_PREFIX_INSTALL
-# FIXME: add the location to brl-cad built libraries
 
 # ------------------------------------------------------------------------------
 # Variables
@@ -132,7 +134,7 @@ export BOOST_ROOT=$DIR/$prefix
 # ------------------------------------------------------------------------------
 if [[ "$param" == 'oiio' ]] || [[ "$param" == 'all' ]]; then
     echo "Installing oiio"
-    cd oiio; make USE_TBB=0 INSTALLDIR=$DIR ;
+    cd oiio; make USE_TBB=ON INSTALLDIR=$DIR ;
     cd ..
 fi
 
