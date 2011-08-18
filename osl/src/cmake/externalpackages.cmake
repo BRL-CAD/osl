@@ -183,6 +183,7 @@ message (STATUS "OPENGL_FOUND=${OPENGL_FOUND} USE_OPENGL=${USE_OPENGL}")
 setup_path (TBB_HOME "${THIRD_PARTY_TOOLS_HOME}"
             "Location of the TBB library install")
 mark_as_advanced (TBB_HOME)
+message(STATUS "TBB_HOME = ${TBB_HOME}")
 if (USE_TBB)
     set (TBB_VERSION 22_004oss)
     if (MSVC)
@@ -262,10 +263,9 @@ else ()
   message (STATUS "Seaching for LLVM_LIBRARY")
   find_library ( LLVM_LIBRARY
     NAMES LLVM-2.7 LLVM-2.8svn LLVM-2.8 LLVM-2.9svn LLVM-2.9
-    PATHS ${LLVM_HOME}/lib /usr/local/lib /opt/local/lib NO_DEFAULT_PATH)
+    PATHS ${LLVM_HOME}/lib /usr/local/lib /opt/local/lib /usr/lib/llvm-2.8/lib)
   find_path ( LLVM_INCLUDES llvm/LLVMContext.h
-    PATHS ${LLVM_HOME}/include /usr/local/include /opt/local/include
-    NO_DEFAULT_PATH)
+    PATHS ${LLVM_HOME}/include /usr/local/include /opt/local/include /usr/lib/llvm-2.8/include)
 endif ()
 
 if (LLVM_LIBRARY AND LLVM_INCLUDES)
