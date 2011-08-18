@@ -42,6 +42,8 @@
 #include "strutil.h"
 #include "fmath.h"
 
+#include "zlib.h"
+
 #include <boost/algorithm/string.hpp>
 using boost::algorithm::iequals;
 
