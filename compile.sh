@@ -5,6 +5,20 @@
 #
 # Assuming installed libs:
 #    * LLVM (only tested with 2.9)
+#
+# Targets:
+#
+# - all (default) -- install all libraries
+# - zlib
+# - ilmbase
+# - openexr
+# - png
+# - tiff
+# - jpeg
+# - boost
+# - oiio
+# - osl
+#
 # ------------------------------------------------------------------------------
 
 # Detect plataform
@@ -39,6 +53,15 @@ if [ -z "$1" ]; then
     param='all'
 else 
     param=$1
+fi
+
+# ------------------------------------------------------------------------------ 
+# Install libz library
+# ------------------------------------------------------------------------------
+if [[ "$param" == 'zlib' ]] || [[ "$param" == 'all' ]]; then
+    echo "Installing zlib"
+    cd libz; cmake -DCMAKE_INSTALL_PREFIX=$DIR/$prefix; make; make install; 
+    cd ..
 fi
 
 # ------------------------------------------------------------------------------
@@ -80,6 +103,17 @@ if [[ "$param" == 'tiff' ]] || [[ "$param" == 'all' ]]; then
     cd tiff-3.9.5; ./configure --prefix=$DIR/$prefix; make; make install;
     cd ..
 fi
+
+# ------------------------------------------------------------------------------ 
+# Install PNG library
+# ------------------------------------------------------------------------------
+if [[ "$param" == 'png' ]] || [[ "$param" == 'all' ]]; then
+    echo "Installing PNG"
+    cd libpng; cmake -DCMAKE_INSTALL_PREFIX=$DIR/$prefix; make; make install;
+    cd ..
+fi
+
+
 
 # ------------------------------------------------------------------------------ 
 # Install Boost
