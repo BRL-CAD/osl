@@ -1,5 +1,7 @@
 # ------------------------------------------------------------------------------
-# This script compiles osl and its dependencies 
+# This script compiles osl and its dependencies. It's possible to
+# compile a single library passing its name as parameter. If no
+# parameter is provided, all libraries are compiled.
 #
 # Assuming installed libs:
 #    * LLVM (only tested with 2.9)
@@ -30,46 +32,63 @@ prefix=dist/
 # Dir where this script is stored
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 # Dir where we'll install everything
-echo $DIR/$prefix
+echo "Installing dir: $DIR/$prefix"
+
+# Read input parameters (select which libs are to be build)
+if [ -z "$1" ]; then
+    param='all'
+else 
+    param=$1
+fi
 
 # ------------------------------------------------------------------------------
 # Install ilmbase
 # ------------------------------------------------------------------------------
-echo "Installing ilmbase"
-cd ilmbase; ./configure --prefix=$DIR/$prefix; make; make install
-cd ..
+if [[ "$param" == 'ilmbase' ]] || [[ "$param" == 'all' ]]; then
+    echo "Installing ilmbase"
+    cd ilmbase; ./configure --prefix=$DIR/$prefix; make; make install
+    cd ..
+fi
 
 export ILMBASE_HOME=$DIR/$prefix
 
 # ------------------------------------------------------------------------------
 # Install openexr
 # ------------------------------------------------------------------------------
-echo "Installing openexr"
-cd openexr; ./configure --prefix=$DIR/$prefix --with-ilmbase-prefix=$DIR/$prefix; make; make install;
-cd ..
+if [[ "$param" == 'openexr' ]] || [[ "$param" == 'all' ]]; then
+    echo "Installing openexr"
+    cd openexr; ./configure --prefix=$DIR/$prefix --with-ilmbase-prefix=$DIR/$prefix; make; make install;
+    cd ..
+fi
 
 export OPENEXR_HOME=$DIR/$prefix
 
 # ------------------------------------------------------------------------------ 
 # Install Jpeg libary
 # ------------------------------------------------------------------------------
-echo "Installing jpeg"
-cd jpeg-8c; ./configure --prefix=$DIR/$prefix; make; make install;
-cd ..
+if [[ "$param" == 'jpeg' ]] || [[ "$param" == 'all' ]]; then
+    echo "Installing jpeg"
+    cd jpeg-8c; ./configure --prefix=$DIR/$prefix; make; make install;
+    cd ..
+fi
 
 # ------------------------------------------------------------------------------ 
 # Install Tiff library
 # ------------------------------------------------------------------------------
-echo "Installing tiff"
-cd tiff-3.9.5; ./configure --prefix=$DIR/$prefix; make; make install;
-cd ..
+if [[ "$param" == 'tiff' ]] || [[ "$param" == 'all' ]]; then
+    echo "Installing tiff"
+    cd tiff-3.9.5; ./configure --prefix=$DIR/$prefix; make; make install;
+    cd ..
+fi
 
 # ------------------------------------------------------------------------------ 
 # Install Boost
 # ------------------------------------------------------------------------------
-echo "Installing Boost"
-cd boost; ./bootstrap.sh --prefix=$DIR/$prefix; ./b2 --layout=tagged; ./b2 install --layout=tagged
-cd ..
+if [[ "$param" == 'boost' ]] || [[ "$param" == 'all' ]]; then
+    echo "Installing Boost"
+    cd boost; ./bootstrap.sh --prefix=$DIR/$prefix; ./b2 --layout=tagged; ./b2 install --layout=tagged
+    cd ..
+fi
 
 # Set environment variable BOOST_ROOT
 export BOOST_ROOT=$DIR/$prefix
@@ -77,16 +96,20 @@ export BOOST_ROOT=$DIR/$prefix
 # ------------------------------------------------------------------------------
 # Instal Open Image IO
 # ------------------------------------------------------------------------------
-echo "Installing oiio"
-cd oiio; make USE_TBB=0 INSTALLDIR=$DIR ;
-cd ..
+if [[ "$param" == 'oiio' ]] || [[ "$param" == 'all' ]]; then
+    echo "Installing oiio"
+    cd oiio; make USE_TBB=0 INSTALLDIR=$DIR ;
+    cd ..
+fi
 
 export OPENIMAGEIOHOME=$DIR/$prefix
 
 # ------------------------------------------------------------------------------
 # Install OSL
 # ------------------------------------------------------------------------------
-cd osl; make INSTALLDIR=$DIR;
-cd ..
+if [[ "$param" == 'osl' ]] || [[ "$param" == 'all' ]]; then
+    cd osl; make INSTALLDIR=$DIR;
+    cd ..
+fi
 
 export OSLHOME=$DIR/$prefix
