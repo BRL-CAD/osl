@@ -19528,7 +19528,7 @@ if test "x$test_prefix" != "xNONE" ; then
    done
    TEST_LDFLAGS="-L$test_prefix/lib"
    TEST_LDFLAGS="$TEST_LDFLAGS $LIB64_IF_EXISTS -L/usr/local/lib"
-   TEST_LIBS="-lImath -lHalf -lIex -lIlmThread"
+   TEST_LIBS="-lImath -lHalf -lIex -lIlmThread -pthread"
 else
                            if test x$PKG_CONFIG != xno ; then
       echo "using pkg-config to set ILMBASE_CXXFLAGS and ILMBASE_LDFLAGS:"
