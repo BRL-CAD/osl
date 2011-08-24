@@ -1,3 +1,4 @@
+#!/bin/bash
 # ------------------------------------------------------------------------------
 # This script compiles osl and its dependencies. It's possible to
 # compile a single library passing its name as parameter. If no
